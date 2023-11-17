@@ -1,0 +1,9 @@
+POST localhost/api/v1/user/sign-up
+Content-Type: application/json
+
+{
+  "login": "Dinario5",
+  "password": "aezakmi1",
+  "name": "Dinar",
+  "surname": "Shagaliev"
+}

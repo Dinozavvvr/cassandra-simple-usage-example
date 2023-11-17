@@ -1,0 +1,11 @@
+server:
+  port: 80
+
+spring:
+  # конфиг Cassandra для Spring Data Jpa for Apache Cassandra
+  cassandra:
+    username: cassandra
+    password: cassandra
+    keyspace-name: cassandra_example_project
+    contact-points: 127.0.0.1
+    local-datacenter: datacenter1

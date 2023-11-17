@@ -1,0 +1,79 @@
+version: '3.2'
+
+services:
+  # cassandra first node
+  cassandra1:
+    restart: always
+    container_name: Cassandra-node-1
+    image: cassandra:4.1.3
+    ports:
+      - "9042:9042"
+    volumes:
+      - ./volumes/node1:/var/lib/cassandra
+    networks:
+      - cassandra_cluster
+
+  # cassandra second node
+  cassandra2:
+    restart: always
+    depends_on:
+      - cassandra1
+    container_name: Cassandra-node-2
+    image: cassandra:4.1.3
+    ports:
+      - "9043:9042"
+    environment:
+      CASSANDRA_SEEDS: cassandra1
+    volumes:
+      - ./volumes/node2:/var/lib/cassandra
+    networks:
+      - cassandra_cluster
+
+  # cassandra third node
+  cassandra3:
+    restart: always
+    depends_on:
+      - cassandra1
+    container_name: Cassandra-node-3
+    image: cassandra:4.1.3
+    ports:
+      - "9044:9042"
+    environment:
+      CASSANDRA_SEEDS: cassandra1
+    volumes:
+      - ./volumes/node3:/var/lib/cassandra
+    networks:
+      - cassandra_cluster
+
+  # cassandra fourth node
+  cassandra4:
+    restart: always
+    depends_on:
+      - cassandra1
+    container_name: Cassandra-node-4
+    image: cassandra:4.1.3
+    environment:
+      CASSANDRA_SEEDS: cassandra1
+    volumes:
+      - ./volumes/node4:/var/lib/cassandra
+    networks:
+      - cassandra_cluster
+
+  # cassandra fifth node
+  cassandra5:
+    restart: always
+    depends_on:
+      - cassandra1
+    container_name: Cassandra-node-5
+    image: cassandra:4.1.3
+    environment:
+      CASSANDRA_SEEDS: cassandra1
+    volumes:
+      - ./volumes/node5:/var/lib/cassandra
+    networks:
+      - cassandra_cluster
+
+# network settings
+networks:
+  cassandra_cluster:
+    driver: bridge

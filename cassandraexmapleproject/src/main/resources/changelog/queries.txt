@@ -1,0 +1,80 @@
+-- создаем keyspace с фактором репликации 3.
+create keyspace if not exists cassandra_example_project with replication = {
+    'class': 'SimpleStrategy', 'replication_factor': 1
+    }
+                                                         and durable_writes = true;
+
+-- создаем таблицу user (Пользователи)
+create table if not exists cassandra_example_project.user
+(
+    id       timeuuid,
+    login    text,
+    password text,
+    role     set<text>, -- может быть несколько ролей одновременно
+    name     text,
+    surname  text,
+    primary key ( (surname), login)
+) with comment = 'Пользователь'
+   and default_time_to_live = 0
+   and bloom_filter_fp_chance = 0.01
+   and clustering order by (login asc);
+--устанавливаем порядок сортировки записей;
+
+-- добавим первых пользователей
+insert into cassandra_example_project.user(surname, name, login, password, role, id)
+values ('Шагалиев', 'Динар', 'DShagaliev', 'pass', {'USER', 'STUDENT'}, now());
+insert into cassandra_example_project.user(surname, name, login, password, role, id)
+values ('Шагалиев', 'Роберт', 'RShagaliev', 'pass', {'USER', 'STUDENT'}, now());
+insert into cassandra_example_project.user(surname, name, login, password, role, id)
+values ('Шеверда', 'Антон', 'ASheverda', 'pass', {'USER', 'STUDENT'}, now());
+insert into cassandra_example_project.user(surname, name, login, password, role, id)
+values ('Ляпустин', 'Никита', 'NLyapustin', 'pass', {'USER', 'STUDENT'}, now());
+insert into cassandra_example_project.user(surname, name, login, password, role, id)
+values ('Ференец', 'Александр', 'AFerenec', 'pass', {'USER', 'LECTOR'}, now());
+insert into cassandra_example_project.user(surname, name, login, password, role, id)
+values ('Шарипова', 'Аделя', 'ASharipova', 'pass', {'USER', 'STUDENT'}, now());
+
+-- проверим на успех записи
+select *
+from cassandra_example_project.user;
+-- еще пару проверок
+select login, surname, token(surname)
+from cassandra_example_project.user;
+select name, surname, login
+from cassandra_example_project.user
+where surname in ('Ференец', 'Ляпустин');
+
+-- создаем таблицу статус пользователя
+create table if not exists cassandra_example_project.user_status
+(
+    status           text,
+    user_id          text,
+    last_online_time timestamp,
+    last_online_date date,
+    primary key ((user_id, last_online_date))
+) with comment = 'Статус пользователя'
+   and default_time_to_live = 0
+   and bloom_filter_fp_chance = 0.01;
+
+-- пока что захардкодим статусы пользователям
+begin batch
+insert into cassandra_example_project.user_status(user_id, last_online_date, last_online_time, status)
+values ('ad81fb30-6860-11ee-a9d7-6956be796be4', toDate(now()), toTimestamp(now()), 'AVAILABLE');
+insert into cassandra_example_project.user_status(user_id, last_online_date, last_online_time, status)
+values ('e95428e0-6860-11ee-a9d7-6956be796be4', toDate(now()), toTimestamp(now()), 'AVAILABLE');
+insert into cassandra_example_project.user_status(user_id, last_online_date, last_online_time, status)
+values ('ad888ae0-6860-11ee-a9d7-6956be796be4', toDate(now()), toTimestamp(now()), 'AVAILABLE');
+insert into cassandra_example_project.user_status(user_id, last_online_date, last_online_time, status)
+values ('ad89ea70-6860-11ee-a9d7-6956be796be4', toDate(now()), toTimestamp(now()), 'AVAILABLE');
+insert into cassandra_example_project.user_status(user_id, last_online_date, last_online_time, status)
+values ('ad857da0-6860-11ee-a9d7-6956be796be4', toDate(now()), toTimestamp(now()), 'AVAILABLE');
+insert into cassandra_example_project.user_status(user_id, last_online_date, last_online_time, status)
+values ('ad872b50-6860-11ee-a9d7-6956be796be4', toDate(now()), toTimestamp(now()), 'DONT_NOTICE');
+apply batch;
+
+-- проверим что данные на месте
+select * from cassandra_example_project.user_status;
+select * from cassandra_example_project.user_status
+         -- оба partition key первичного ключа обязательны в блоке where для запроса
+         where user_id in ('ad872b50-6860-11ee-a9d7-6956be796be4',
+                           'e95428e0-6860-11ee-a9d7-6956be796be4') and last_online_date = toDate(now());
