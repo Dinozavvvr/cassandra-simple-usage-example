@@ -3,9 +3,7 @@ package ru.dinar.cassandraexmapleproject.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.dinar.cassandraexmapleproject.dto.user.SignUpRequestDto;
-import ru.dinar.cassandraexmapleproject.model.user.User;
-import ru.dinar.cassandraexmapleproject.model.user.UserDto;
+import ru.dinar.cassandraexmapleproject.dto.user.UserDto;
 import ru.dinar.cassandraexmapleproject.service.UserService;
 
 import java.util.List;

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.dinar.cassandraexmapleproject.mapper.UserDtoUserMapper;
 import ru.dinar.cassandraexmapleproject.model.user.User;
-import ru.dinar.cassandraexmapleproject.model.user.UserDto;
+import ru.dinar.cassandraexmapleproject.dto.user.UserDto;
 import ru.dinar.cassandraexmapleproject.repository.UserRepository;
 
 import java.util.List;

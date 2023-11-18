@@ -1,7 +1,6 @@
 package ru.dinar.cassandraexmapleproject.service;
 
-import ru.dinar.cassandraexmapleproject.model.user.User;
-import ru.dinar.cassandraexmapleproject.model.user.UserDto;
+import ru.dinar.cassandraexmapleproject.dto.user.UserDto;
 
 import java.util.List;
 

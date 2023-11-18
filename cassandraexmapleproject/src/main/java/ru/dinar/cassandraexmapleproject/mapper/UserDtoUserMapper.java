@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import ru.dinar.cassandraexmapleproject.model.user.User;
-import ru.dinar.cassandraexmapleproject.model.user.UserDto;
+import ru.dinar.cassandraexmapleproject.dto.user.UserDto;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package ru.dinar.cassandraexmapleproject.model.user;
+package ru.dinar.cassandraexmapleproject.dto.user;
 
 import lombok.Data;
 
