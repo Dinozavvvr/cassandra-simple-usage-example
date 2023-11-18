@@ -1,5 +1,6 @@
 package ru.dinar.cassandraexmapleproject.service;
 
+import com.datastax.driver.core.utils.UUIDs;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.dinar.cassandraexmapleproject.dto.user.SignUpRequestDto;
@@ -26,6 +27,7 @@ public class PlaneSignUpService implements SignUpService {
     private User getFromSignUpRequest(SignUpRequestDto signUpRequestDto) {
         User newUser = SignUpRequestDtoUserMapper.INSTANCE.from(signUpRequestDto);
 
+        newUser.setId(UUIDs.timeBased());
         newUser.setUserRoles(new HashSet<>());
         newUser.getUserRoles().add(UserRole.USER.name());
 

@@ -1,6 +1,5 @@
 package ru.dinar.cassandraexmapleproject.repository;
 
-import com.datastax.driver.core.utils.UUIDs;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
 import com.datastax.driver.mapping.Result;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
 import ru.dinar.cassandraexmapleproject.model.user.User;
 
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @Profile("mapper-based")
@@ -34,9 +32,22 @@ public class MapperManagerBasedUserRepository implements UserRepository {
 
     @Override
     public void create(User user) {
-        user.setId(UUIDs.timeBased());
-
         userMapper.save(user);
+    }
+
+    @Override
+    public User read(String surname, String login) {
+        return userMapper.get(surname, login);
+    }
+
+    @Override
+    public void update(User user) {
+        userMapper.save(user);
+    }
+
+    @Override
+    public void delete(User user) {
+        userMapper.delete(user);
     }
 
     @Override

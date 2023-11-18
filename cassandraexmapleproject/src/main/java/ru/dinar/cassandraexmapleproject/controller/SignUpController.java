@@ -22,7 +22,6 @@ public class SignUpController {
      * */
     @PostMapping
     public ResponseEntity<?> create(@RequestBody SignUpRequestDto signUpRequestDto) {
-        // todo: dto validation (Hibernate Validators)
         signUpService.signUp(signUpRequestDto);
         return ResponseEntity.ok().build();
     }

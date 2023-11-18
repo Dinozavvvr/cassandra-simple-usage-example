@@ -1,1 +1,26 @@
+GET localhost/api/v1/user/Shagaliev/Dinario5
+
+###
+
 GET localhost/api/v1/user/all
+
+###
+
+DELETE localhost/api/v1/user
+Content-Type: application/json
+
+{
+  "login": "Dinario5",
+  "surname": "Shagaliev"
+}
+
+###
+
+PUT localhost/api/v1/user
+Content-Type: application/json
+
+{
+  "login": "Dinario5",
+  "name": "DinarUpdated",
+  "surname": "Shagaliev"
+}
